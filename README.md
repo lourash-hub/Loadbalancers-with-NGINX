@@ -215,16 +215,26 @@ Paste the confi guration file below to confi gure nginx to act like a load balan
 
 **upstream Directive:**
 upstream backend_servers { ... }: This block defines a group of server backends that Nginx will load balance across. The name backend_servers is an identifier that you will use to refer to this group elsewhere in your Nginx configuration.
+
 **server your-first-webserver-ip:8000;**: This line specifies the first backend server by its IP address and the port it's listening on. You should replace your-first-webserver-ip with the actual IP address of your first web server.
+
 **server your-second-webserver-ip:8000;**: Similar to the first, this line specifies the second backend server. Replace your-second-webserver-ip with the actual IP of your second web server.
+
+
 server Directive:
 **listen 80;**: This tells Nginx to listen for incoming connections on port 80, which is the standard port for HTTP traffic.
+
 **server_name your-load-balancer-public-ip-or-domain;**: This specifies the domain name or public IP address of the load balancer itself. Replace your-load-balancer-public-ip-or-domain with your actual domain or IP address. This is where clients will send their requests.
+
 **location / { ... } Block:**
 This block defines how to handle requests for the root URL (/) and all sub-paths.
+
 **proxy_pass http://backend_servers**;: This directive tells Nginx to forward requests to the backend_servers group defined in the upstream block. Nginx will use its load balancing algorithm to select a server from this group.
+
 **proxy_set_header Host $host;**: This sets the Host header of the forwarded request to the value of the incoming request's host header. This is important for servers that serve different content based on the Host header.
+
 **proxy_set_header X-Real-IP $remote_addr;**: This sets the X-Real-IP header to the IP address of the client making the request. This is useful for backend servers to know the original requester's IP, as the direct connection to them comes from the load balancer.
+
 **proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;**: This appends the client's IP address to the X-Forwarded-For header, which is a standard way to identify the original IP address of a client connecting through an HTTP proxy or load balancer.
 
 
